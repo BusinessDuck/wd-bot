@@ -68,7 +68,7 @@ function registerUser(chatId, time, username, update = false) {
     }
 
     if (timeSetLocal && timeSetLocal.push) {
-        timeSetLocal.push(username);
+        timeSetLocal.push(username.toLowerCase());
     }
     saveDb();
 }

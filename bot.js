@@ -32,7 +32,10 @@ function isAdmin(chatId, userId) {
 }
 
 function getUserName(userData) {
-    return `${userData.username || (userData.first_name + userData.last_name)}`;
+    if (!userData.username) {
+        return false;
+    }
+    return `${userData.username}`;
 }
 
 bot.command('help', ctx => {
@@ -63,8 +66,13 @@ bot.command('regme', ctx => {
 
     const [hours, minutes = '00'] = match[0].split(/[:-]/);
     const regTime = moment().set({hours, minutes}).format("HH:mm");
+    const userName = getUserName(ctx.from);
 
-    if(dataService.isRegistered(ctx.chat.id, getUserName(ctx.from))) {
+    if (!userName) {
+        return ctx.reply(`Для работы с ботом, пожалуйста укажите ваш никнейм в настройках telegram`);
+    }
+
+    if (dataService.isRegistered(ctx.chat.id, userName)) {
         return ctx.reply(`Вы уже зарегистрированы, смотрите ваше время в таблице /reglist`);
     }
 
@@ -79,7 +87,7 @@ bot.command('reguser', ctx => {
         }
         let [userName, message = ""] = ctx.state.command.args;
         const match = message.match(/(\d{2}[:-]00)|(\d[:-]00)|(^\d{1,2}$)/);
-        if(!userName.match(/^@/)) {
+        if (!userName.match(/^@/)) {
             return ctx.reply(`Неверно указан пользователь, используйте символ @ для указания пользователя`);
         }
         userName = userName.replace(/^@/, "");
@@ -91,7 +99,7 @@ bot.command('reguser', ctx => {
 
         const [hours, minutes = '00'] = match[0].split(/[:-]/);
         const regTime = moment().set({hours, minutes}).format("HH:mm");
-        if(dataService.isRegistered(ctx.chat.id, userName)) {
+        if (dataService.isRegistered(ctx.chat.id, userName)) {
             ctx.reply(`Пользователь ${userName} уже был зарегистрирован, время было изменено на ${regTime}`);
             return dataService.registerUser(ctx.chat.id, regTime, userName, true);
         }
