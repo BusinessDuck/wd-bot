@@ -79,7 +79,7 @@ function isRegistered(chatId, username) {
     }
     const timeSet = chats[chatId]["timeSet"];
 
-    return values(timeSet).find(userlist => userlist.includes(username));
+    return values(timeSet).find(userlist => userlist.includes(username.toLowerCase()));
 }
 
 function getRegList(chatId) {
