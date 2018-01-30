@@ -67,7 +67,7 @@ function registerUser(chatId, time, username) {
 function unregisterUser(chatId, time, username) {
     const index = chats[chatId]["timeSet"][time].indexOf(username);
     if (index >= 0) {
-        time.splice(index, 1);
+        chats[chatId]["timeSet"][time].splice(index, 1);
     }
     saveDb();
 
