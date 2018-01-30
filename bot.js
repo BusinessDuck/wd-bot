@@ -11,8 +11,10 @@ const dataService = require('./dataService');
 const bot = new Telegraf(config.botToken);
 const helpMsg = `Руководство пользователя:
 /regstart - объявляется начало регистрации, старые данные стираются [Админ]
-/regme регистрация на указаное время, пример: /regme 01-00, /regme 1, /regme 01:00
-/reguser регистрация пользователя в ручную, пример: /reguser @Vasya 01:00 [Админ]
+/regme - регистрация на указаное время, пример: /regme 01-00, /regme 1, /regme 01:00
+/reguser - регистрация пользователя в ручную, пример: /reguser @Vasya 01:00 [Админ]
+/unregme - отмена регистрации, прмер: /unregme 2:00
+/unreguser - отмена регистрации пользователя в ручную, /unreguser @Vasya 2:00 [Админ]
 /help - вывод этого руководства
 
 WarDragonsTeam Bot v0.1 beta by businessDuck
