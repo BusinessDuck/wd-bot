@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="92778c01-051a-4221-95ed-7d874d7547c7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bot.js" afterPath="$PROJECT_DIR$/bot.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataService.js" afterPath="$PROJECT_DIR$/dataService.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="bot.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bot.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="160" column="38" lean-forward="false" selection-start-line="160" selection-start-column="24" selection-end-line="160" selection-end-column="38" />
+            <state relative-caret-position="170">
+              <caret line="10" column="37" lean-forward="false" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -48,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dataService.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dataService.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dataService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="76" column="21" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="21" />
+            <state relative-caret-position="498">
+              <caret line="81" column="75" lean-forward="false" selection-start-line="81" selection-start-column="75" selection-end-line="81" selection-end-column="75" />
               <folding />
             </state>
           </provider>
@@ -80,6 +79,8 @@
       <find>console.l</find>
       <find>isRegistered</find>
       <find>unregisterUser</find>
+      <find>toLow</find>
+      <find>toLower</find>
     </findStrings>
     <replaceStrings>
       <replace>let</replace>
@@ -101,8 +102,8 @@
         <option value="$PROJECT_DIR$/commandArgs.js" />
         <option value="$PROJECT_DIR$/changelog.md" />
         <option value="$PROJECT_DIR$/db.json" />
-        <option value="$PROJECT_DIR$/dataService.js" />
         <option value="$PROJECT_DIR$/bot.js" />
+        <option value="$PROJECT_DIR$/dataService.js" />
       </list>
     </option>
   </component>
@@ -190,7 +191,7 @@
       <workItem from="1517053978255" duration="8377000" />
       <workItem from="1517140949679" duration="5669000" />
       <workItem from="1517159515600" duration="1623000" />
-      <workItem from="1517309817765" duration="2855000" />
+      <workItem from="1517309817765" duration="3020000" />
     </task>
     <task id="LOCAL-00001" summary="fix lowercase">
       <created>1517160138365</created>
@@ -220,11 +221,18 @@
       <option name="project" value="LOCAL" />
       <updated>1517312385485</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix functions">
+      <created>1517313358819</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1517313358819</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18524000" />
+    <option name="totallyTimeSpent" value="18689000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -269,7 +277,8 @@
     <MESSAGE value="fix lowercase" />
     <MESSAGE value="add functions /unreg and multiply registrations support" />
     <MESSAGE value="little fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="little fix" />
+    <MESSAGE value="fix functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -455,10 +464,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dataService.js">
+    <entry file="file://$PROJECT_DIR$/bot.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="76" column="21" lean-forward="false" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="21" />
+        <state relative-caret-position="170">
+          <caret line="10" column="37" lean-forward="false" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -471,10 +480,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bot.js">
+    <entry file="file://$PROJECT_DIR$/dataService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="160" column="38" lean-forward="false" selection-start-line="160" selection-start-column="24" selection-end-line="160" selection-end-column="38" />
+        <state relative-caret-position="498">
+          <caret line="81" column="75" lean-forward="false" selection-start-line="81" selection-start-column="75" selection-end-line="81" selection-end-column="75" />
           <folding />
         </state>
       </provider>

@@ -65,7 +65,7 @@ function registerUser(chatId, time, username) {
 }
 
 function unregisterUser(chatId, time, username) {
-    const index = chats[chatId]["timeSet"][time].indexOf(username);
+    const index = chats[chatId]["timeSet"][time].indexOf(username.toLowerCase());
     if (index >= 0) {
         chats[chatId]["timeSet"][time].splice(index, 1);
     }
@@ -79,7 +79,7 @@ function isRegistered(chatId, regTime, username) {
         return false;
     }
 
-    return chats[chatId]["timeSet"][regTime].indexOf(username) >= 0;
+    return chats[chatId]["timeSet"][regTime].indexOf(username.toLowerCase()) >= 0;
 }
 
 function getRegList(chatId) {
