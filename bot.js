@@ -38,6 +38,10 @@ function getUserName(userData) {
     return `${userData.username}`;
 }
 
+function validateDate(date) {
+    return date.match(/(\d{2}[:-]00)|(\d[:-]00)|(^\d{1,2}$)/);
+}
+
 bot.command('help', ctx => {
     ctx.reply(helpMsg);
 });
@@ -54,8 +58,8 @@ bot.command('regstart', ctx => {
 });
 
 bot.command('regme', ctx => {
-    const message = ctx.state.command.args[0] || "";
-    const match = message.match(/(\d{2}[:-]00)|(\d[:-]00)|(^\d{1,2}$)/);
+    const date = ctx.state.command.args[0] || "";
+    const match = validateDate(date);
 
     if (!match) {
 
@@ -72,12 +76,31 @@ bot.command('regme', ctx => {
         return ctx.reply(`Для работы с ботом, пожалуйста укажите ваш никнейм в настройках telegram`);
     }
 
-    if (dataService.isRegistered(ctx.chat.id, userName)) {
-        return ctx.reply(`Вы уже зарегистрированы, смотрите ваше время в таблице /reglist`);
+    dataService.registerUser(ctx.chat.id, regTime, getUserName(ctx.from));
+    ctx.reply(`@${userName} зарегистрирован на ${regTime}`);
+});
+
+bot.command('unregme', ctx => {
+    const date = ctx.state.command.args[0] || "";
+    const match = validateDate(date);
+
+    if (!match) {
+
+        return ctx.reply(`
+            Неверный формат даты. (Допустимые форматы : 12:00, 12, 12-00) \n/help для подробной информации
+        `);
     }
 
-    dataService.registerUser(ctx.chat.id, regTime, getUserName(ctx.from));
-    ctx.reply(`Вы были зарегистрированы на ${regTime}`);
+    const [hours, minutes = '00'] = match[0].split(/[:-]/);
+    const regTime = moment().set({hours, minutes}).format("HH:mm");
+    const userName = getUserName(ctx.from);
+
+    if (!userName) {
+        return ctx.reply(`Для работы с ботом, пожалуйста укажите ваш никнейм в настройках telegram`);
+    }
+
+    dataService.unregisterUser(ctx.chat.id, regTime, getUserName(ctx.from));
+    ctx.reply(`@${userName}, регистрация на ${regTime} отменена`);
 });
 
 bot.command('reguser', ctx => {
@@ -85,8 +108,8 @@ bot.command('reguser', ctx => {
         if (!isAdmin) {
             ctx.reply("Команда доступна только администраторам");
         }
-        let [userName, message = ""] = ctx.state.command.args;
-        const match = message.match(/(\d{2}[:-]00)|(\d[:-]00)|(^\d{1,2}$)/);
+        let [userName, date = ""] = ctx.state.command.args;
+        const match = validateDate(date);
         if (!userName.match(/^@/)) {
             return ctx.reply(`Неверно указан пользователь, используйте символ @ для указания пользователя`);
         }
@@ -99,12 +122,39 @@ bot.command('reguser', ctx => {
 
         const [hours, minutes = '00'] = match[0].split(/[:-]/);
         const regTime = moment().set({hours, minutes}).format("HH:mm");
-        if (dataService.isRegistered(ctx.chat.id, userName)) {
-            ctx.reply(`Пользователь ${userName} уже был зарегистрирован, время было изменено на ${regTime}`);
-            return dataService.registerUser(ctx.chat.id, regTime, userName, true);
+        if (dataService.unregisterUser(ctx.chat.id, regTime, userName)) {
+            ctx.reply(`@${userName} был зарегистрирован на ${regTime}`);
+        } else {
+            ctx.reply(`Пользователь ${userName} не регистрировался на время ${regTime}`);
         }
-        dataService.registerUser(ctx.chat.id, regTime, userName);
-        ctx.reply(`${userName} был зарегистрирован на ${regTime}`);
+    });
+});
+
+bot.command('unreguser', ctx => {
+    isAdmin(ctx.chat.id, ctx.from.id).then(isAdmin => {
+        if (!isAdmin) {
+            ctx.reply("Команда доступна только администраторам");
+        }
+
+        let [userName, date = ""] = ctx.state.command.args;
+        const match = validateDate(date);
+        if (!userName.match(/^@/)) {
+            return ctx.reply(`Неверно указан пользователь, используйте символ @ для указания пользователя`);
+        }
+        userName = userName.replace(/^@/, "");
+        if (!match) {
+            return ctx.reply(`
+            Неверный формат даты. (Допустимые форматы : 12:00, 12, 12-00) \n/help для подробной информации
+        `);
+        }
+
+        const [hours, minutes = '00'] = match[0].split(/[:-]/);
+        const regTime = moment().set({hours, minutes}).format("HH:mm");
+        if (dataService.unregisterUser(ctx.chat.id, regTime, userName)) {
+            ctx.reply(`@${userName} был зарегистрирован на ${regTime}`);
+        } else {
+            ctx.reply(`Пользователь ${userName} не регистрировался на время ${regTime}`);
+        }
     });
 });
 

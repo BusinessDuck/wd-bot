@@ -52,25 +52,26 @@ function initTimeSet(chatId) {
     saveDb();
 }
 
-function registerUser(chatId, time, username, update = false) {
+function registerUser(chatId, time, username) {
     if (!chats[chatId]) {
         return false;
     }
     const timeSetLocal = chats[chatId]["timeSet"][time];
 
-    if (update) {
-        chats[chatId]["timeSet"] = forEach(chats[chatId]["timeSet"], time => {
-            const index = time.indexOf(username);
-            if (index >= 0) {
-                time.splice(index, 1);
-            }
-        })
-    }
-
     if (timeSetLocal && timeSetLocal.push) {
         timeSetLocal.push(username.toLowerCase());
     }
     saveDb();
+}
+
+function unregisterUser(chatId, time, username) {
+    const index = chats[chatId]["timeSet"][time].indexOf(username);
+    if (index >= 0) {
+        time.splice(index, 1);
+    }
+    saveDb();
+
+    return index >= 0;
 }
 
 function isRegistered(chatId, username) {
@@ -95,5 +96,5 @@ module.exports = {
     initTimeSet,
     registerUser,
     getRegList,
-    isRegistered
+    unregisterUser
 };
