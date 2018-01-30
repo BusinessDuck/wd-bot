@@ -74,13 +74,12 @@ function unregisterUser(chatId, time, username) {
     return index >= 0;
 }
 
-function isRegistered(chatId, username) {
+function isRegistered(chatId, regTime, username) {
     if (!chats[chatId]) {
         return false;
     }
-    const timeSet = chats[chatId]["timeSet"];
 
-    return values(timeSet).find(userlist => userlist.includes(username.toLowerCase()));
+    return chats[chatId]["timeSet"][regTime].indexOf(username) >= 0;
 }
 
 function getRegList(chatId) {
@@ -96,5 +95,6 @@ module.exports = {
     initTimeSet,
     registerUser,
     getRegList,
-    unregisterUser
+    unregisterUser,
+    isRegistered
 };

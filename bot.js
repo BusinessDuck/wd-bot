@@ -76,6 +76,10 @@ bot.command('regme', ctx => {
         return ctx.reply(`Для работы с ботом, пожалуйста укажите ваш никнейм в настройках telegram`);
     }
 
+    if (dataService.isRegistered(ctx.chat.id, regTime, userName)) {
+        return ctx.reply(`Вы уже зарегистрированы на ${regTime}`);
+    }
+
     dataService.registerUser(ctx.chat.id, regTime, getUserName(ctx.from));
     ctx.reply(`@${userName} зарегистрирован на ${regTime}`);
 });
@@ -99,8 +103,11 @@ bot.command('unregme', ctx => {
         return ctx.reply(`Для работы с ботом, пожалуйста укажите ваш никнейм в настройках telegram`);
     }
 
-    dataService.unregisterUser(ctx.chat.id, regTime, getUserName(ctx.from));
-    ctx.reply(`@${userName}, регистрация на ${regTime} отменена`);
+    if (dataService.unregisterUser(ctx.chat.id, regTime, getUserName(ctx.from))) {
+        return ctx.reply(`@${userName}, регистрация на ${regTime} отменена`);
+    }
+
+    return ctx.reply(`Вы не регистрировались на ${regTime}`);
 });
 
 bot.command('reguser', ctx => {
@@ -122,11 +129,12 @@ bot.command('reguser', ctx => {
 
         const [hours, minutes = '00'] = match[0].split(/[:-]/);
         const regTime = moment().set({hours, minutes}).format("HH:mm");
-        if (dataService.unregisterUser(ctx.chat.id, regTime, userName)) {
-            ctx.reply(`@${userName} был зарегистрирован на ${regTime}`);
-        } else {
-            ctx.reply(`Пользователь ${userName} не регистрировался на время ${regTime}`);
+        if (dataService.isRegistered(ctx.chat.id, regTime, userName)) {
+            return ctx.reply(`Пользователь ${userName} уже зарегистрирован на ${regTime}`);
         }
+
+        dataService.registerUser(ctx.chat.id, regTime, userName);
+        ctx.reply(`@${userName} был зарегистрирован на ${regTime}`);
     });
 });
 
@@ -153,7 +161,7 @@ bot.command('unreguser', ctx => {
         if (dataService.unregisterUser(ctx.chat.id, regTime, userName)) {
             ctx.reply(`@${userName} был зарегистрирован на ${regTime}`);
         } else {
-            ctx.reply(`Пользователь ${userName} не регистрировался на время ${regTime}`);
+            ctx.reply(`Пользователь ${userName} не регистрировался на ${regTime}`);
         }
     });
 });
